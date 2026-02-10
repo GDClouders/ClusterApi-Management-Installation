@@ -1,0 +1,50 @@
+---
+# This section includes base Calico installation configuration.
+# For more information, see: https://docs.tigera.io/calico/latest/reference/installation/api#operator.tigera.io/v1.Installation
+apiVersion: operator.tigera.io/v1
+kind: Installation
+metadata:
+  name: default
+spec:
+  # Configures Calico networking.
+  # This file is parameterized. Use `envsubst` to substitute environment variables
+  # (e.g. exported from a local `.env`) before applying.
+  # Example: `source .env && envsubst < custom-resources.yaml | kubectl apply -f -`
+
+  apiVersion: operator.tigera.io/v1
+  kind: Installation
+  metadata:
+    name: default
+  spec:
+    # Configures Calico networking.
+    calicoNetwork:
+      ipPools:
+        - name: default-ipv4-ippool
+          blockSize: ${CALICO_BLOCK_SIZE}
+          cidr: ${CALICO_CIDR}
+          encapsulation: ${CALICO_ENCAPSULATION}
+          natOutgoing: ${CALICO_NAT_OUTGOING}
+          nodeSelector: ${CALICO_NODE_SELECTOR}
+
+  ---
+  # This section configures the Calico API server.
+  # For more information, see: https://docs.tigera.io/calico/latest/reference/installation/api#operator.tigera.io/v1.APIServer
+  apiVersion: operator.tigera.io/v1
+  kind: APIServer
+  metadata:
+    name: default
+  spec: {}
+
+  ---
+  # Configures the Calico Goldmane flow aggregator.
+  apiVersion: operator.tigera.io/v1
+  kind: Goldmane
+  metadata:
+    name: default
+
+  ---
+  # Configures the Calico Whisker observability UI.
+  apiVersion: operator.tigera.io/v1
+  kind: Whisker
+  metadata:
+    name: default
