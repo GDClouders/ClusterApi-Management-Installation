@@ -15,6 +15,7 @@ or a secrets manager. A `.env.example` file is provided with placeholders—copy
 - `kubectl`
 - `clusterctl`
 - Access to a Proxmox instance and the `cluster-api-provider-proxmox`
+- `Proxmox Token` with at least `PVEVMAdmin and PVEAuditor` permission
 
 Reference docs:
 
@@ -64,6 +65,13 @@ clusterctl version
 ```
 
 ## Generating and applying a cluster on Proxmox
+### Initialize the management cluster
+```bash
+# PROXMOX_URL, PROXMOX_TOKEN, PROXMOX_SECRET needed
+clusterctl init --infrastructure proxmox --ipam in-cluster
+```
+
+### Generating the cluster configuration
 
 After setting up provider credentials in your local `.env` and sourcing it,
 generate and apply a cluster manifest for the `management` namespace:
